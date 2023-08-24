@@ -1341,14 +1341,15 @@ class Monitor extends BeanModel {
         if (!isFirstBeat || bean.status === DOWN) {
             const notificationList = await Monitor.getNotificationList(monitor);
 
+            let currentTime = new Date().toLocaleTimeString(); //take curent time to varaibel
             let text;
             if (bean.status === UP) {
-                text = "✅ Up";
+                text = "✅ Up ${currentTime}";
             } else {
-                text = "🔴 Down";
+                text = "🔴 Down ${currentTime}";
             }
 
-            let msg = `[${monitor.name}] [${text}] ${bean.msg}`;
+            let msg = `[Monitor name: ${monitor.name}] [Monitor ID: ${monitor.id}] [Status: ${text}] ${monitor.url} ${bean.msg}`;
 
             for (let notification of notificationList) {
                 try {
