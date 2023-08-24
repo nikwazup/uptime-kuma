@@ -21,7 +21,7 @@ COPY --from=build_healthcheck /app/extra/healthcheck /app/extra/healthcheck
 RUN chmod +x /app/extra/entrypoint.sh
 
 ############################################
-# ⭐ Main Image
+# ⭐️ Main Image
 ############################################
 FROM louislam/uptime-kuma:base-debian AS release
 WORKDIR /app
@@ -65,10 +65,32 @@ RUN apt update \
 ## Empty the directory, because we have to clone the Git repo.
 RUN rm -rf ./* && chown node /app
 
+
+WORKDIR /app
+
+
+#USER root
+#RUN ls -lah /home/node/
+#RUN chown -R node:node /home/node/.gitconfig
 USER node
-RUN git config --global user.email "no-reply@no-reply.com"
-RUN git config --global user.name "PR Tester"
-RUN git clone https://github.com/louislam/uptime-kuma.git .
+#RUN chown -R node:node /home/node/.gitconfig
+#RUN ls -l /home/node
+RUN pwd
+RUN git config --global user.email "nikwazup@gmail.com" .
+RUN ls -lah /home/node
+USER root
+RUN chown -R node:node /home/node/.gitconfig
+RUN chmod 775 -R /home/node
+RUN ls -lah /home/node
+#USER root
+#USER node
+RUN ls -lah /home/node
+RUN git config --global user.name "nikwazup"
+
+#RUN git config --global user.email "nikwazup@gmail.com" && \
+#    git config --global user.name "nikwazup"
+
+RUN git clone https://github.com/nikwazup/uptime-kuma.git .
 RUN npm ci
 
 EXPOSE 3000 3001
@@ -98,7 +120,7 @@ RUN chmod +x /app/extra/upload-github-release-asset.sh
 # RUN tar -zcvf $FILE app
 # RUN /app/extra/upload-github-release-asset.sh github_api_token=$GITHUB_TOKEN owner=louislam repo=uptime-kuma tag=$VERSION filename=$FILE
 
-# Dist only
-RUN cd /app && tar -zcvf $DIST dist
-RUN /app/extra/upload-github-release-asset.sh github_api_token=$GITHUB_TOKEN owner=louislam repo=uptime-kuma tag=$VERSION filename=/app/$DIST
 
+# Dist only
+#RUN cd /app && tar -zcvf $DIST dist
+#RUN /app/extra/upload-github-release-asset.sh github_api_token=$GITHUB_TOKEN owner=louislam repo=uptime-kuma tag=$VERSION filename=/app/$DIST
