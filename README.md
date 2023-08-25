@@ -2,6 +2,15 @@
     <img src="./public/icon.svg" width="128" alt="" />
 </div>
 
+
+## NIKITOS'ES guide:
+```bash
+cd "your project folder"
+chown 775 "your project folder"
+docker build -t my-uptime-kuma-image -f docker/dockerfile .
+docker-compose -f docker/dockerfile up -d 
+```
+
 # Uptime Kuma
 
 Uptime Kuma is an easy-to-use self-hosted monitoring tool.
